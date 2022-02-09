@@ -20,6 +20,7 @@
     "fortmatic": "^2.2.1",
     "key-did-resolver": "^1.4.4",
     "lit-js-sdk": "^1.1.116",
+    "uint8arrays": "^3.0.0",
     "web3modal": "^1.9.5"
   },
   "devDependencies": {
