@@ -110,5 +110,8 @@
       "text",
       "html"
     ]
+  },
+  "resolutions": {
+    "@unstoppabledomains/resolution": "npm:@unstoppabledomains/resolution@7.1.2"
   }
 }
