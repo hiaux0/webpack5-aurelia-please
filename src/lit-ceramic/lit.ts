@@ -95,13 +95,21 @@ export async function _decryptWithLit(
   accessControlConditions: Array<any>,
   chain: string
 ): Promise<string> {
+  /* prettier-ignore */ console.log('TCL ~ file: lit.ts ~ line 99 ~ _decryptWithLit')
   const authSig = await LitJsSdk.checkAndSignAuthMessage({
     chain: chain,
   });
   // encrypted blob, sym key
+  console.log('here ----')
   console.log("encryptedSymKey", encryptedSymmKey);
   // @ts-ignore
-  const toDecrypt = uint8ArrayToString(encryptedSymmKey, "base16");
+  window.uint8ArrayToString = uint8ArrayToString
+  let toDecrypt;
+  try {
+    toDecrypt = uint8ArrayToString(encryptedSymmKey, "base16");
+  } catch (error) {
+    /* prettier-ignore */ console.log('TCL ~ file: lit.ts ~ line 110 ~ error', error)
+  }
   console.log("toDecrypt", toDecrypt);
   // decrypt the symmetric key
   const decryptedSymmKey = await window.litNodeClient.getEncryptionKey({

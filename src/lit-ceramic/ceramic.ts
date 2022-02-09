@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { CeramicApi } from "@ceramicnetwork/common";
 import Ceramic from "@ceramicnetwork/http-client";
 import { Caip10Link } from "@ceramicnetwork/stream-caip10-link";
@@ -9,6 +10,8 @@ import { createIDX } from "./idx";
 import { getProvider, getAddress } from "./wallet";
 import { ResolverRegistry } from "did-resolver";
 import { decodeb64 } from "./lit";
+import { ThreeIdConnect } from "@3id/connect";
+import Web3Modal from 'web3modal'
 
 declare global {
   interface Window {
@@ -46,28 +49,44 @@ export async function _createCeramic(
  * and user's ETH Address
  */
 export async function _authenticateCeramic(
-  ceramicPromise: Promise<CeramicApi>
+  ceramicPromise: Promise<CeramicApi>,
+  web3Modal: Web3Modal,
+  threeID: ThreeIdConnect
 ): Promise<Array<any>> {
   console.log("authenticate Ceramic!");
 
-  const provider = await getProvider();
-  const [ceramic, address] = await Promise.all([ceramicPromise, getAddress()]);
-  const keyDidResolver = KeyDidResolver.getResolver();
-  const threeIdResolver = ThreeIdResolver.getResolver(ceramic);
-  const resolverRegistry: ResolverRegistry = {
-    ...threeIdResolver,
-    ...keyDidResolver,
-  };
-  const did = new DID({
-    provider: provider,
-    resolver: resolverRegistry,
-  });
+  try {
+    console.log('0')
+    const provider = await getProvider(web3Modal, threeID);
+    console.log('1')
+    const [ceramic, address] = await Promise.all([
+      ceramicPromise,
+      getAddress(web3Modal),
+    ]);
+    console.log('2')
+    const keyDidResolver = KeyDidResolver.getResolver();
+    const threeIdResolver = ThreeIdResolver.getResolver(ceramic);
+    const resolverRegistry: ResolverRegistry = {
+      ...threeIdResolver,
+      ...keyDidResolver,
+    };
+    const did = new DID({
+      provider: provider,
+      resolver: resolverRegistry,
+    });
 
-  await did.authenticate();
-  await ceramic.setDID(did);
-  const idx = createIDX(ceramic);
-  window.did = ceramic.did;
-  return Promise.resolve([idx.id, ceramic, address]);
+    console.log('3')
+    await did.authenticate();
+    console.log('4')
+    await ceramic.setDID(did);
+    console.log('5')
+    const idx = createIDX(ceramic);
+    window.did = ceramic.did;
+    console.log('6')
+    return Promise.resolve([idx.id, ceramic, address]);
+  } catch (error) {
+    /* prettier-ignore */ console.log('TCL ~ file: ceramic.ts ~ line 74 ~ error', error)
+  }
 }
 
 /**
@@ -80,7 +99,7 @@ export async function _authenticateCeramic(
 export async function _writeCeramic(
   auth: any[],
   toBeWritten: any[]
-): Promise<String> {
+): Promise<string> {
   if (auth) {
     const ceramic = auth[1];
     const toStore = {
@@ -109,7 +128,7 @@ export async function _writeCeramic(
  */
 export async function _readCeramic(
   auth: any[],
-  streamId: String
+  streamId: string
 ): Promise<string> {
   if (auth) {
     const ceramic = auth[1];
