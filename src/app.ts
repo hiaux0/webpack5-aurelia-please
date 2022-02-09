@@ -1,11 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { ThreeIdConnect } from "@3id/connect";
-import Web3Modal from "web3modal";
-import Authereum from "authereum";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import { Integration } from "lit-ceramic";
-import { getProvider } from "lit-ceramic/wallet";
-import * as LitJsSdk from "lit-js-sdk";
+import { Integration } from "lit-ceramic-sdk";
 
 declare global {
   interface Window {
@@ -21,8 +15,8 @@ export class App {
   litCeramicIntegration: Integration;
   // streamID = "kjzl6cwe1jw1479rnblkk5u43ivxkuo29i4efdx1e7hk94qrhjl0d4u0dyys1au"; // test data
   streamID = "kjzl6cwe1jw14ajv5r4mzj6v2nfnqlp39ev3kyx67hdixoa1frzc1e9uaolobi6"; // test data
-  web3Modal: Web3Modal;
-  threeID: any;
+  // web3Modal: Web3Modal;
+  // threeID: any;;
 
   constructor() {
     /* prettier-ignore */ console.log('TCL ~ file: app.ts ~ line 26 ~ App ~ constructor ~ constructor')
@@ -39,28 +33,25 @@ export class App {
   // );
   // }
 
-  async bind() {
-    this.litCeramicIntegration = new Integration();
-  }
-
   async attached() {
-    this.threeID = new ThreeIdConnect();
-    this.web3Modal = new Web3Modal({
-      disableInjectedProvider: false,
-      cacheProvider: false,
-      providerOptions: {
-        walletconnect: {
-          package: WalletConnectProvider,
-          options: {
-            infuraId: "e87f83fb85bf4aa09bdf6605ebe144b7",
-          },
-        },
-        authereum: {
-          package: Authereum,
-          options: {},
-        },
-      },
-    });
+    this.litCeramicIntegration = new Integration();
+    // this.threeID = new ThreeIdConnect();
+    // this.web3Modal = new Web3Modal({
+    //   disableInjectedProvider: false,
+    //   cacheProvider: false,
+    //   providerOptions: {
+    //     walletconnect: {
+    //       package: WalletConnectProvider,
+    //       options: {
+    //         infuraId: "e87f83fb85bf4aa09bdf6605ebe144b7",
+    //       },
+    //     },
+    //     authereum: {
+    //       package: Authereum,
+    //       options: {},
+    //     },
+    //   },
+    // });
 
     console.log("DOMContent.........");
     this.litCeramicIntegration.startLitClient(window);
@@ -75,7 +66,8 @@ export class App {
     } else {
       // @ts-ignore
       const response = this.litCeramicIntegration
-        .readAndDecrypt(this.streamID, this.web3Modal, this.threeID)
+        // .readAndDecrypt(this.streamID, this.web3Modal, this.threeID)
+        .readAndDecrypt(this.streamID)
         .then(
           (value) =>
             // @ts-ignore
@@ -127,8 +119,8 @@ export class App {
     const value = await this.litCeramicIntegration.encryptAndWrite(
       stringToEncrypt,
       accessControlConditions,
-      this.web3Modal,
-      this.threeID
+      // this.web3Modal,
+      // this.threeID
     );
     const response = updateStreamID(value);
     console.log(response);
