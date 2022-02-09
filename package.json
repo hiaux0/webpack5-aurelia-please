@@ -19,7 +19,6 @@
     "dids": "^2.4.3",
     "fortmatic": "^2.2.1",
     "key-did-resolver": "^1.4.4",
-    "lit-ceramic-sdk": "^1.1.7",
     "lit-js-sdk": "^1.1.116",
     "uint8arrays": "^3.0.0",
     "web3modal": "^1.9.5"
