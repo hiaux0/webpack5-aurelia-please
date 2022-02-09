@@ -65,13 +65,15 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
         __dirname,
         "node_modules/aurelia-binding"
       ),
-      process: "process/browser"
+      process: "process/browser",
+      buffer: "buffer"
     },
     fallback: {
       stream: require.resolve("stream-browserify"),
       http: require.resolve("stream-http"),
       https: require.resolve("https-browserify"),
       os: require.resolve("os-browserify/browser"),
+      buffer: require.resolve('buffer/'),
     },
   },
   entry: {
@@ -284,7 +286,13 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
     ],
   },
   plugins: [
-    new DuplicatePackageCheckerPlugin(),
+    // Work around for Buffer is undefined:
+    // https://github.com/webpack/changelog-v5/issues/10
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      Buffer: ['buffer', 'Buffer'],
+    }),
+    // new DuplicatePackageCheckerPlugin(),
     new AureliaPlugin(),
     new ModuleDependenciesPlugin({
       "aurelia-testing": ["./compile-spy", "./view-spy"],
@@ -319,9 +327,6 @@ module.exports = ({ production }, { analyze, hmr, port, host }) => ({
      * `del` (https://www.npmjs.com/package/del), or `rimraf` (https://www.npmjs.com/package/rimraf).
      */
     new CleanWebpackPlugin(),
-    new webpack.ProvidePlugin({
-      process: 'process/browser',
-    }),
     // new webpack.DefinePlugin({
     //   'process.env': "development"
 
