@@ -1,5 +1,6 @@
 // import LitJsSdk from 'lit-js-sdk'
 import * as LitJsSdk from "lit-js-sdk";
+// @ts-ignore
 import { toString as uint8ArrayToString } from "uint8arrays/to-string";
 
 /**
@@ -51,11 +52,11 @@ export function decodeb64(b64String: any) {
  */
 export async function _encryptWithLit(
   auth: any[],
-  aStringThatYouWishToEncrypt: String,
+  aStringThatYouWishToEncrypt: string,
   accessControlConditions: Array<Object>
 ): Promise<Array<any>> {
   const chain = "ethereum";
-  let authSig = await LitJsSdk.checkAndSignAuthMessage({
+  const authSig = await LitJsSdk.checkAndSignAuthMessage({
     chain: chain,
   });
   const { encryptedZip, symmetricKey } = await LitJsSdk.zipAndEncryptString(
@@ -93,12 +94,13 @@ export async function _decryptWithLit(
   encryptedSymmKey: Uint8Array,
   accessControlConditions: Array<any>,
   chain: string
-): Promise<String> {
-  let authSig = await LitJsSdk.checkAndSignAuthMessage({
+): Promise<string> {
+  const authSig = await LitJsSdk.checkAndSignAuthMessage({
     chain: chain,
   });
   // encrypted blob, sym key
   console.log("encryptedSymKey", encryptedSymmKey);
+  // @ts-ignore
   const toDecrypt = uint8ArrayToString(encryptedSymmKey, "base16");
   console.log("toDecrypt", toDecrypt);
   // decrypt the symmetric key

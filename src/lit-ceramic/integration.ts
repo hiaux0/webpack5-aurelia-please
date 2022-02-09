@@ -20,7 +20,7 @@ declare global {
 export class Integration {
   ceramicPromise: Promise<CeramicApi>;
 
-  constructor(ceramicNodeUrl: string = "https://ceramic-clay.3boxlabs.com") {
+  constructor(ceramicNodeUrl = "https://ceramic-clay.3boxlabs.com") {
     this.ceramicPromise = _createCeramic(ceramicNodeUrl);
   }
 
@@ -37,13 +37,15 @@ export class Integration {
    * @returns {Promise<String>} A promise that resolves to a streamID for the encrypted data that's been stored
    */
   async encryptAndWrite(
-    toEncrypt: String,
+    toEncrypt: string,
     accessControlConditions: Array<Object>
-  ): Promise<String> {
+  ): Promise<string> {
     try {
       const a = await _authenticateCeramic(this.ceramicPromise);
+      // @ts-ignore
       const en = await _encryptWithLit(a, toEncrypt, accessControlConditions);
       const wr = await _writeCeramic(a, en);
+      // @ts-ignore
       return wr;
     } catch (error) {
       return `something went wrong encrypting: ${error}`;
@@ -56,7 +58,7 @@ export class Integration {
    * @param {String} streamID the streamID of the encrypted data the user wants to access
    * @returns {Promise<String>} A promise that resolves to the unencrypted string of what was stored
    */
-  async readAndDecrypt(streamID: String): Promise<any> {
+  async readAndDecrypt(streamID: string): Promise<any> {
     try {
       // makes certain DID/wallet has been auth'ed
       const a = await _authenticateCeramic(this.ceramicPromise);

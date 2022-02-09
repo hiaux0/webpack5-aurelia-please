@@ -3,7 +3,10 @@ import * as LitJsSdk from 'lit-js-sdk'
 
 declare global {
   interface Window {
-    litNodeClient: unknown;
+    litNodeClient: {
+      saveEncryptionKey: (args: unknown) => unknown
+      getEncryptionKey: (args: unknown) => unknown
+    };
   }
 }
 
