@@ -8,9 +8,19 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@3id/connect": "^0.2.5",
+    "@ceramicnetwork/3id-did-resolver": "^1.4.16",
+    "@ceramicnetwork/http-client": "^1.5.7",
+    "@ceramicnetwork/stream-caip10-link": "^1.2.9",
+    "@ceramicstudio/idx": "^0.12.2",
     "aurelia-animator-css": "^1.0.4",
     "aurelia-bootstrapper": "^2.3.3",
-    "lit-js-sdk": "^1.1.116"
+    "authereum": "^0.1.14",
+    "dids": "^2.4.3",
+    "fortmatic": "^2.2.1",
+    "key-did-resolver": "^1.4.4",
+    "lit-js-sdk": "^1.1.116",
+    "web3modal": "^1.9.5"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
